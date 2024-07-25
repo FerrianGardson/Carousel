@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const currentPositions =
           carouselContainer.querySelectorAll(".position .current");
         const totalPositions =
-          carouselContainer.querySelectorAll(".position .all");
+          carouselContainer.querySelectorAll(".position .total");
         const numbersContainer =
           carouselContainer.querySelector(".position.numbers");
         const bulletsContainer =
@@ -21,8 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
         let cardWidth = carouselContainer.querySelector(".card").offsetWidth;
         let carouselWidth = carouselContainer.offsetWidth;
-        // let gap = parseInt(getComputedStyle(carousel).gap) || 0;
-        let gap = 0;
+        let gap = parseInt(getComputedStyle(carousel).gap) || 0;
         let cardsPerView = Math.floor((carouselWidth + gap) / (cardWidth + gap));
         const totalCards = carousel.querySelectorAll(".card").length;
   
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (numbersContainer) {
             // Обновление старого счётчика
             numbersContainer.querySelector(".current").textContent = Math.min(currentIndex + cardsPerView, totalCards);
-            numbersContainer.querySelector(".all").textContent = totalCards;
+            numbersContainer.querySelector(".total").textContent = totalCards;
           }
         }
   
