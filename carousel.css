@@ -1,0 +1,70 @@
+/* Общие стили для карусели */
+
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 4rem;
+}
+
+.carousel {
+    position: relative;
+    overflow: hidden;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.carousel .row {
+    display: flex;
+    column-gap: 10px;
+    transition: transform 0.5s ease-in-out;
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.carousel .card {
+    width: 300px; /* Фиксированная ширина для каждой карточки */
+    height: 300px;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.carousel .position.bullets {
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+}
+
+.carousel .bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.carousel .bullet.active {
+    background-color: #333;
+}
+
+.carousel .position.numbers {
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.carousel .position.numbers span {
+    margin: 0 5px;
+}
