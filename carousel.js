@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let cardWidth = carouselContainer.querySelector(".card").offsetWidth; // Ширина одной карточки
       let carouselWidth = carouselContainer.offsetWidth; // Ширина карусели
-      let gap = parseInt(getComputedStyle(carousel).gap) || 0; // Расстояние между карточками
+      let gap = parseInt(getComputedStyle(carousel).columnGap) || 0; // Расстояние между карточками
       let cardsPerView = Math.floor((carouselWidth + gap) / (cardWidth + gap)); // Количество карточек, видимых на экране
       const totalCards = carousel.querySelectorAll(".card").length; // Общее количество карточек
 
@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
       function updateCarousel() {
         // Расчёт смещения для показа нужных карточек
         const offset = -(currentIndex * (cardWidth + gap)); // Смещение в пикселях
+        console.log('gap', gap);
+        console.log('offset', offset);
         carousel.style.transform = `translateX(${offset}px)`; // Применение смещения
 
         const endIndex = Math.min(currentIndex + cardsPerView, totalCards); // Последняя видимая карточка
