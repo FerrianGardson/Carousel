@@ -4,48 +4,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
     rows.forEach((carousel) => {
       // Кнопки и позиционные элементы
-      const prevButtons = carouselContainer.querySelectorAll(".carousel-button.left");
-      const nextButtons = carouselContainer.querySelectorAll(".carousel-button.right");
-      const currentPositions = carouselContainer.querySelectorAll(".position .current");
-      const totalPositions = carouselContainer.querySelectorAll(".position .total");
-      const numbersContainer = carouselContainer.querySelector(".position.numbers");
-      const bulletsContainer = carouselContainer.querySelector(".position.bullets");
+      const prevButtons = carouselContainer.querySelectorAll(
+        ".carousel-button.left"
+      );
+      const nextButtons = carouselContainer.querySelectorAll(
+        ".carousel-button.right"
+      );
+      const currentPositions = carouselContainer.querySelectorAll(
+        ".position .current"
+      );
+      const totalPositions = carouselContainer.querySelectorAll(
+        ".position .total"
+      );
+      const numbersContainer = carouselContainer.querySelector(
+        ".position.numbers"
+      );
+      const bulletsContainer = carouselContainer.querySelector(
+        ".position.bullets"
+      );
 
-      let cardWidth = carouselContainer.querySelector(".card").offsetWidth; // Ширина одной карточки
       let carouselWidth = carouselContainer.offsetWidth; // Ширина карусели
-      let gap = parseInt(getComputedStyle(carousel).columnGap) || 0; // Расстояние между карточками
-      let cardsPerView = Math.floor((carouselWidth + gap) / (cardWidth + gap)); // Количество карточек, видимых на экране
       const totalCards = carousel.querySelectorAll(".card").length; // Общее количество карточек
+      const totalScrollWidth = carousel.scrollWidth; // Общая ширина карусели (с учётом всех карточек)
+      const totalScrollSteps = Math.ceil(totalScrollWidth / carouselWidth); // Общее количество шагов крутки
 
-      let currentIndex = 0; // Индекс текущей видимой карточки
+      let currentIndex = 0; // Индекс текущей позиции крутки
 
       // Функция для обновления карусели
       function updateCarousel() {
-        // Расчёт смещения для показа нужных карточек
-        const offset = -(currentIndex * (cardWidth + gap)); // Смещение в пикселях
-        console.log('gap', gap);
-        console.log('offset', offset);
+        const offset = -(currentIndex * carouselWidth); // Смещение на ширину карусели
+
+        console.log(`Карусель прокручивается на ${-offset}px`);
+        console.log(`Текущий индекс: ${currentIndex}`);
+        console.log(`Ширина карусели: ${carouselWidth}px`);
+
         carousel.style.transform = `translateX(${offset}px)`; // Применение смещения
 
-        const endIndex = Math.min(currentIndex + cardsPerView, totalCards); // Последняя видимая карточка
-        currentPositions.forEach(position => position.textContent = endIndex);
-        totalPositions.forEach(position => position.textContent = totalCards);
+        const endIndex = currentIndex + 1; // Индекс текущего экрана (плюс один для счёта)
+
+        currentPositions.forEach(
+          (position) => (position.textContent = endIndex)
+        );
+        totalPositions.forEach(
+          (position) => (position.textContent = totalScrollSteps)
+        );
 
         // Обновляем позиционные кружки и номера
         updateBullets();
         updateNumbers();
 
         // Активация или деактивация кнопок
-        prevButtons.forEach(button => button.disabled = currentIndex === 0);
-        nextButtons.forEach(button => button.disabled = endIndex >= totalCards);
+        prevButtons.forEach((button) => (button.disabled = currentIndex === 0));
+        nextButtons.forEach(
+          (button) => (button.disabled = endIndex >= totalScrollSteps)
+        );
       }
 
       // Функция для обновления числового счётчика
       function updateNumbers() {
         if (numbersContainer) {
           // Обновление счётчика
-          numbersContainer.querySelector(".current").textContent = Math.min(currentIndex + cardsPerView, totalCards);
-          numbersContainer.querySelector(".total").textContent = totalCards;
+          numbersContainer.querySelector(".current").textContent =
+            currentIndex + 1;
+          numbersContainer.querySelector(
+            ".total"
+          ).textContent = totalScrollSteps;
         }
       }
 
@@ -55,15 +78,12 @@ document.addEventListener("DOMContentLoaded", function () {
           // Очистка старых кружков
           bulletsContainer.innerHTML = "";
 
-          // Количество кружков, основанное на количестве "круток"
-          const totalBullets = Math.ceil(totalCards / cardsPerView);
-
-          for (let i = 0; i < totalBullets; i++) {
+          for (let i = 0; i < totalScrollSteps; i++) {
             const bullet = document.createElement("div");
-            bullet.className = i === Math.floor(currentIndex / cardsPerView) ? "bullet active" : "bullet";
+            bullet.className = i === currentIndex ? "bullet active" : "bullet";
 
             bullet.addEventListener("click", () => {
-              currentIndex = i * cardsPerView; // Переход к выбранной позиции
+              currentIndex = i; // Переход к выбранной позиции
               updateCarousel();
             });
 
@@ -72,45 +92,44 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // Функция для показа следующего набора карточек
+      // Функция для показа следующего экрана карточек
       function showNextRow() {
-        if (currentIndex + cardsPerView < totalCards) {
-          currentIndex += cardsPerView; // Переход к следующему набору карточек
+        if (currentIndex < totalScrollSteps - 1) {
+          currentIndex++; // Переход к следующему экрану
+          console.log("Переход к следующему экрану");
         } else {
-          currentIndex = totalCards - cardsPerView; // Показать последнюю группу карточек
+          currentIndex = totalScrollSteps - 1; // Остановка на последнем экране
+          console.log("Достигнут последний экран, больше круток вправо нет");
         }
         updateCarousel();
       }
 
-      // Функция для показа предыдущего набора карточек
+      // Функция для показа предыдущего экрана карточек
       function showPrevRow() {
         if (currentIndex > 0) {
-          currentIndex -= cardsPerView; // Переход к предыдущему набору карточек
-          if (currentIndex < 0) currentIndex = 0; // Убедиться, что индекс не становится отрицательным
-          updateCarousel();
+          currentIndex--; // Переход к предыдущему экрану
+          console.log("Переход к предыдущему экрану");
+        } else {
+          currentIndex = 0; // Остановка на первом экране
+          console.log("Достигнут первый экран, больше круток влево нет");
         }
+        updateCarousel();
       }
 
       // Привязка обработчиков событий к кнопкам
-      nextButtons.forEach(button => button.addEventListener("click", showNextRow));
-      prevButtons.forEach(button => button.addEventListener("click", showPrevRow));
+      nextButtons.forEach((button) =>
+        button.addEventListener("click", showNextRow)
+      );
+      prevButtons.forEach((button) =>
+        button.addEventListener("click", showPrevRow)
+      );
 
       updateCarousel(); // Инициализация карусели
 
       // Обновление карусели при изменении размера окна
       window.addEventListener("resize", function () {
-        cardWidth = carouselContainer.querySelector(".card").offsetWidth; // Обновление ширины карточки
         carouselWidth = carouselContainer.offsetWidth; // Обновление ширины карусели
-        gap = parseInt(getComputedStyle(carousel).gap) || 0; // Обновление зазора между карточками
-        cardsPerView = Math.floor((carouselWidth + gap) / (cardWidth + gap)); // Пересчёт видимых карточек
-        const offset = -(currentIndex * (cardWidth + gap)); // Пересчёт смещения
-
-        carousel.style.transition = "none"; // Отключаем анимацию
-        carousel.style.transform = `translateX(${offset}px)`; // Применение нового смещения
-        setTimeout(() => {
-          carousel.style.transition = ""; // Включаем анимацию
-        }, 0);
-
+        console.log("Обновление размеров карусели при изменении размера окна");
         updateCarousel();
       });
 

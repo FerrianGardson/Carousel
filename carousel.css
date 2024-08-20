@@ -1,16 +1,35 @@
-/* ÐžÐ±Ñ‰Ð¸Ðµ ÑÑ‚Ð¸Ð»Ð¸ Ð´Ð»Ñ ÐºÐ°Ñ€ÑƒÑÐµÐ»Ð¸ */
-
-body {
+.carousel {
+    width: 1230px;
+  }
+  
+  @media (max-width: 1024px) {
+    .carousel {
+      width: 920px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .carousel {
+      width: 610px;
+    }
+  }
+  
+  @media (max-width: 425px) {
+    .carousel {
+      width: 300px;
+    }
+  }
+  
+  body {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
-    padding: 4rem;
-}
-
-.carousel {
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .carousel {
     position: relative;
     overflow: hidden;
-    width: 300px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -18,98 +37,95 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background: green;
-}
-
-.carousel .row {
+  }
+  
+  .carousel .row {
     display: flex;
     column-gap: 10px;
     transition: transform 0.5s ease-in-out;
     align-self: flex-start;
     flex-shrink: 0;
-}
-
-.carousel .card {
-    width: 300px; /* Ð¤Ð¸ÐºÑÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð°Ñ ÑˆÐ¸Ñ€Ð¸Ð½Ð° Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð¹ ÐºÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÐ¸ */
+  }
+  
+  .carousel .card {
+    width: 300px;
     height: 300px;
     background: #f5f5f5;
     border: 1px solid #ccc;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-}
-
-.carousel .position.bullets {
+  }
+  
+  .carousel .position.bullets {
     display: flex;
     gap: 5px;
     flex-direction: row;
-}
-
-.carousel .bullet {
+  }
+  
+  .carousel .bullet {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: #ccc;
     cursor: pointer;
-}
-
-.carousel .bullet.active {
+  }
+  
+  .carousel .bullet.active {
     background-color: #333;
-}
-
-.carousel .position.numbers {
+  }
+  
+  .carousel .position.numbers {
     top: 20px;
     right: 20px;
     font-size: 16px;
     color: #333;
-}
-
-.carousel .position.numbers span {
+  }
+  
+  .carousel .position.numbers span {
     /* margin: 0 5px; */
-}
-
-button.carousel-button {
+  }
+  
+  button.carousel-button {
     width: 30px;
     height: 30px;
     border-radius: 15px;
     border: 0;
     background: #c7c7c7;
-}
-
-button.carousel-button:hover{
-    background:gray;
-}
-
-button.carousel-button:disabled{
-    background:#eaeaea;
-}
-
-button.carousel-button.right svg {
-    position:relative;
-    left:1px;
-}
-
-button.carousel-button.left svg {
-    position:relative;
-    right:1px;
-}
-
-.position {
+  }
+  
+  button.carousel-button:hover {
+    background: gray;
+  }
+  
+  button.carousel-button:disabled {
+    background: #eaeaea;
+  }
+  
+  button.carousel-button.right svg {
+    position: relative;
+    left: 1px;
+  }
+  
+  button.carousel-button.left svg {
+    position: relative;
+    right: 1px;
+  }
+  
+  .position {
     display: flex;
     gap: 5px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-}
-
-.counter {
+  }
+  
+  .counter {
     display: flex;
     flex-direction: row;
     column-gap: 5px;
-}
-
-.row {
-    background: red;
-}
+  }
+  
