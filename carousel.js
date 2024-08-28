@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".carousel").forEach((carouselContainer) => {
     const rows = carouselContainer.querySelectorAll(".row");
 
-    rows.forEach((carousel) => {
+    rows.forEach((row) => {
+      // Получаем значение column-gap
+      const columnGap = parseInt(getComputedStyle(row).columnGap) || 0;
+      console.log(`Значение column-gap для .row: ${columnGap}px`);
+
       // Кнопки и позиционные элементы
       const prevButtons = carouselContainer.querySelectorAll(
         ".carousel-button.left"
@@ -24,21 +28,22 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       let carouselWidth = carouselContainer.offsetWidth; // Ширина карусели
-      const totalCards = carousel.querySelectorAll(".card").length; // Общее количество карточек
-      const totalScrollWidth = carousel.scrollWidth; // Общая ширина карусели (с учётом всех карточек)
+      const totalCards = row.querySelectorAll(".card").length; // Общее количество карточек
+      const totalScrollWidth = row.scrollWidth; // Общая ширина карусели (с учётом всех карточек)
       const totalScrollSteps = Math.ceil(totalScrollWidth / carouselWidth); // Общее количество шагов крутки
 
       let currentIndex = 0; // Индекс текущей позиции крутки
 
       // Функция для обновления карусели
       function updateCarousel() {
-        const offset = -(currentIndex * carouselWidth); // Смещение на ширину карусели
+        const offset = -(currentIndex * (carouselWidth + columnGap)); // Смещение на ширину карусели с учетом columnGap
 
         console.log(`Карусель прокручивается на ${-offset}px`);
         console.log(`Текущий индекс: ${currentIndex}`);
         console.log(`Ширина карусели: ${carouselWidth}px`);
+        console.log(`columnGap: ${columnGap}px`);
 
-        carousel.style.transform = `translateX(${offset}px)`; // Применение смещения
+        row.style.transform = `translateX(${offset}px)`; // Применение смещения
 
         const endIndex = currentIndex + 1; // Индекс текущего экрана (плюс один для счёта)
 
@@ -96,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       function showNextRow() {
         if (currentIndex < totalScrollSteps - 1) {
           currentIndex++; // Переход к следующему экрану
-          console.log("Переход к следующему экрану");
+          console.log(`Переход к следующему экрану (индекс ${currentIndex})`);
         } else {
           currentIndex = totalScrollSteps - 1; // Остановка на последнем экране
           console.log("Достигнут последний экран, больше круток вправо нет");
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
       function showPrevRow() {
         if (currentIndex > 0) {
           currentIndex--; // Переход к предыдущему экрану
-          console.log("Переход к предыдущему экрану");
+          console.log(`Переход к предыдущему экрану (индекс ${currentIndex})`);
         } else {
           currentIndex = 0; // Остановка на первом экране
           console.log("Достигнут первый экран, больше круток влево нет");
